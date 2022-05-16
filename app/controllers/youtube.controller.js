@@ -70,3 +70,25 @@ exports.playlistVideos = async (req, res) => {
 
   res.send(response.data.items);
 };
+
+exports.creatorAbout = async (req, res) => {
+  console.log(req.query.token);
+
+  const response = await axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/channels", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        part: "snippet,statistics",
+        mine: true,
+        key: req.query.key,
+      },
+    });
+
+  res.send(response.data.items);
+};
