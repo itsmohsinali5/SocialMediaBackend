@@ -29,6 +29,7 @@
     "google-auth-library": "^7.14.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
-    "sequelize": "^6.11.0"
+    "sequelize": "^6.11.0",
+    "youtube-api": "^3.0.1"
   }
 }
