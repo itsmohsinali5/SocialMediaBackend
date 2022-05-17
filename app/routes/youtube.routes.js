@@ -7,7 +7,7 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/youtube/api/my-channel",  controller.singleChannelVideos);
+  app.get("/youtube/api/my-channel-videos",  controller.singleChannelVideos);
   app.get("/youtube/api/playlist-list",  controller.playlistList);
   app.get("/youtube/api/playlist-videos",  controller.playlistVideos);
   app.get("/youtube/api/creator-about",  controller.creatorAbout);

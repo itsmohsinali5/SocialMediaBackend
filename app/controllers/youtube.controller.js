@@ -21,7 +21,23 @@ exports.singleChannelVideos = async (req, res) => {
   const id = response.data.items.map((id) => {
     return id.contentDetails.relatedPlaylists.uploads;
   });
-  res.send(id);
+  const response1 = await axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/playlistItems", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        part: "snippet,contentDetails",
+        playlistId: id.join(""),
+        key: req.query.key,
+      },
+    });
+    res.send(response1.data.items);
+  
 };
 
 // user's channel playlist
@@ -70,6 +86,8 @@ exports.playlistVideos = async (req, res) => {
 
   res.send(response.data.items);
 };
+
+// about details of the owner of the channel
 
 exports.creatorAbout = async (req, res) => {
   console.log(req.query.token);
