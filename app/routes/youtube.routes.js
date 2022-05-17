@@ -11,6 +11,8 @@ module.exports = function (app) {
   app.get("/youtube/api/playlist-list",  controller.playlistList);
   app.get("/youtube/api/playlist-videos",  controller.playlistVideos);
   app.get("/youtube/api/creator-about",  controller.creatorAbout);
+  app.get("/youtube/api/featured-videos",  controller.featuredVideos);
+
 
 
   

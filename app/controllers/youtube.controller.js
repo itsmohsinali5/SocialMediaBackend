@@ -87,8 +87,7 @@ exports.playlistVideos = async (req, res) => {
   res.send(response.data.items);
 };
 
-// about details of the owner of the channel
-
+// "about details" of the owner of the channel
 exports.creatorAbout = async (req, res) => {
   console.log(req.query.token);
 
@@ -104,6 +103,31 @@ exports.creatorAbout = async (req, res) => {
       params: {
         part: "snippet,statistics",
         mine: true,
+        key: req.query.key,
+      },
+    });
+
+  res.send(response.data.items);
+};
+
+// featured videos
+exports.featuredVideos = async (req, res) => {
+  console.log(req.query.token);
+
+  const response = await axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/videos", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        part: "snippet, contentDetails, statistics",
+        chart: "mostPopular",
+        regionCode: "PK",
+        maxResults: 8,
         key: req.query.key,
       },
     });
