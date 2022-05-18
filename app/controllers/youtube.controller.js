@@ -36,8 +36,7 @@ exports.singleChannelVideos = async (req, res) => {
         key: req.query.key,
       },
     });
-    res.send(response1.data.items);
-  
+  res.send(response1.data.items);
 };
 
 // user's channel playlist
@@ -63,7 +62,6 @@ exports.playlistList = async (req, res) => {
 
   res.send(response.data.items);
 };
-
 
 // playlist videos
 exports.playlistVideos = async (req, res) => {
@@ -112,8 +110,6 @@ exports.creatorAbout = async (req, res) => {
 
 // featured videos
 exports.featuredVideos = async (req, res) => {
-  console.log(req.query.token);
-
   const response = await axios
     .create({
       baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -129,6 +125,53 @@ exports.featuredVideos = async (req, res) => {
         regionCode: "PK",
         maxResults: 8,
         key: req.query.key,
+      },
+    });
+
+  res.send(response.data.items);
+};
+
+// subscriptions of channels
+exports.subscriptions = async (req, res) => {
+  console.log(req.query.token);
+
+  const response = await axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/subscriptions", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        part: "snippet, contentDetails",
+        mine: true,
+        maxResults: 4,
+        key: req.query.key,
+        pageToken: req.query.Token,
+      },
+    });
+
+  res.send(response.data.items);
+};
+
+// channels unsubcribe
+
+exports.unsub = async (req, res) => {
+
+  const response = await axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/subscriptions", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        key: req.query.key,
+        id: req.query.Id,
       },
     });
 
