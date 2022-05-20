@@ -14,6 +14,8 @@ module.exports = function (app) {
   app.get("/youtube/api/featured-videos",  controller.featuredVideos);
   app.get("/youtube/api/subscriptions",  controller.subscriptions);
   app.get("/youtube/api/unsub",  controller.unsub);
+  app.get("/youtube/api/channel-analytics",  controller.channelAnalytics);
+
 
 
 

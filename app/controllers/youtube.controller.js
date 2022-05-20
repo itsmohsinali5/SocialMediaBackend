@@ -41,8 +41,6 @@ exports.singleChannelVideos = async (req, res) => {
 
 // user's channel playlist
 exports.playlistList = async (req, res) => {
-  console.log(req.query.token);
-
   const response = await axios
     .create({
       baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -65,8 +63,6 @@ exports.playlistList = async (req, res) => {
 
 // playlist videos
 exports.playlistVideos = async (req, res) => {
-  console.log(req.query.token);
-
   const response = await axios
     .create({
       baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -87,8 +83,6 @@ exports.playlistVideos = async (req, res) => {
 
 // "about details" of the owner of the channel
 exports.creatorAbout = async (req, res) => {
-  console.log(req.query.token);
-
   const response = await axios
     .create({
       baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -133,8 +127,6 @@ exports.featuredVideos = async (req, res) => {
 
 // subscriptions of channels
 exports.subscriptions = async (req, res) => {
-  console.log(req.query.token);
-
   const response = await axios
     .create({
       baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -159,7 +151,6 @@ exports.subscriptions = async (req, res) => {
 // channels unsubcribe
 
 exports.unsub = async (req, res) => {
-
   const response = await axios
     .create({
       baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -176,4 +167,31 @@ exports.unsub = async (req, res) => {
     });
 
   res.send(response.data.items);
+};
+
+// google analytics ..stats of whole channel
+// v2.0
+exports.channelAnalytics = async (req, res) => {
+  let today = new Date();
+  const response = await axios
+    .create({
+      baseURL: "https://youtubeanalytics.googleapis.com/v2/",
+    })
+    .get("reports", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        ids: "channel==MINE",
+        endDate: "2022-05-18",
+        metrics:
+          "views,comments",
+        startDate: "2021-01-01",
+        dimensions: "video",
+        sort: "day",
+      },
+    });
+
+  res.send(response.data);
 };
