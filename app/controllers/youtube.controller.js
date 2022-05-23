@@ -137,7 +137,7 @@ exports.subscriptions = async (req, res) => {
         "Content-Type": "application/json",
       },
       params: {
-        part: "snippet, contentDetails",
+        part: "snippet, contentDetails, statistics",
         mine: true,
         maxResults: 4,
         key: req.query.key,
@@ -188,7 +188,7 @@ exports.channelAnalytics = async (req, res) => {
         metrics:
           "views,comments",
         startDate: "2021-01-01",
-        dimensions: "video",
+        dimensions: "day",
         sort: "day",
       },
     });
