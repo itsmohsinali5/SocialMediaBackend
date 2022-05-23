@@ -137,7 +137,7 @@ exports.subscriptions = async (req, res) => {
         "Content-Type": "application/json",
       },
       params: {
-        part: "snippet, contentDetails, statistics",
+        part: "snippet, contentDetails",
         mine: true,
         maxResults: 4,
         key: req.query.key,
@@ -145,7 +145,25 @@ exports.subscriptions = async (req, res) => {
       },
     });
 
-  res.send(response.data.items);
+  const id = response.data.items.map((item) => {
+    return item.snippet.resourceId.channelId;
+  });
+  const response2 = await axios
+  .create({
+    baseURL: "https://www.googleapis.com/youtube/v3/",
+  })
+  .get("/channels", {
+    headers: {
+      Authorization: `Bearer ${req.query.token}`,
+      "Content-Type": "application/json",
+    },
+    params: {
+      part: "snippet, statistics",
+      id: id.join(","),
+      key: req.query.key,
+    },
+  });
+  res.send(response2.data.items);
 };
 
 // channels unsubcribe
@@ -185,8 +203,7 @@ exports.channelAnalytics = async (req, res) => {
       params: {
         ids: "channel==MINE",
         endDate: "2022-05-18",
-        metrics:
-          "views,comments",
+        metrics: "views,comments",
         startDate: "2021-01-01",
         dimensions: "day",
         sort: "day",
