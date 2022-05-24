@@ -207,7 +207,7 @@ console.log(req,"resq")
       params: {
         ids: "channel==MINE",
         endDate: today,
-        metrics: "views,comments",
+        metrics: "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
         startDate: "2021-01-01",
         dimensions: "day",
         sort: "day",
