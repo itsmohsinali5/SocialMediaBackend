@@ -1,5 +1,5 @@
 const axios = require("axios");
-
+const moment = require("moment")
 //videos of onwers's channels.
 exports.singleChannelVideos = async (req, res) => {
   const response = await axios
@@ -190,7 +190,11 @@ exports.unsub = async (req, res) => {
 // google analytics ..stats of whole channel
 // v2.0
 exports.channelAnalytics = async (req, res) => {
-  let today = new Date();
+
+  let date = new Date();
+  let today = moment(date).format('YYYY-MM-DD')
+  
+  console.log(today)
   const response = await axios
     .create({
       baseURL: "https://youtubeanalytics.googleapis.com/v2/",
@@ -202,7 +206,7 @@ exports.channelAnalytics = async (req, res) => {
       },
       params: {
         ids: "channel==MINE",
-        endDate: "2022-05-18",
+        endDate: today,
         metrics: "views,comments",
         startDate: "2021-01-01",
         dimensions: "day",
