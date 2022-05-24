@@ -190,7 +190,7 @@ exports.unsub = async (req, res) => {
 // google analytics ..stats of whole channel
 // v2.0
 exports.channelAnalytics = async (req, res) => {
-
+console.log(req,"resq")
   let date = new Date();
   let today = moment(date).format('YYYY-MM-DD')
   
