@@ -1,5 +1,5 @@
 const axios = require("axios");
-const moment = require("moment")
+const moment = require("moment");
 //videos of onwers's channels.
 exports.singleChannelVideos = async (req, res) => {
   const response = await axios
@@ -98,6 +98,7 @@ exports.creatorAbout = async (req, res) => {
         key: req.query.key,
       },
     });
+    console.log("sniipet", response.data.items[0].snippet.publishedAt);
 
   res.send(response.data.items);
 };
@@ -121,7 +122,6 @@ exports.featuredVideos = async (req, res) => {
         key: req.query.key,
       },
     });
-
   res.send(response.data.items);
 };
 
@@ -149,20 +149,20 @@ exports.subscriptions = async (req, res) => {
     return item.snippet.resourceId.channelId;
   });
   const response2 = await axios
-  .create({
-    baseURL: "https://www.googleapis.com/youtube/v3/",
-  })
-  .get("/channels", {
-    headers: {
-      Authorization: `Bearer ${req.query.token}`,
-      "Content-Type": "application/json",
-    },
-    params: {
-      part: "snippet, statistics",
-      id: id.join(","),
-      key: req.query.key,
-    },
-  });
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/channels", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        part: "snippet, statistics",
+        id: id.join(","),
+        key: req.query.key,
+      },
+    });
   res.send(response2.data.items);
 };
 
@@ -190,11 +190,29 @@ exports.unsub = async (req, res) => {
 // google analytics ..stats of whole channel
 // v2.0
 exports.channelAnalytics = async (req, res) => {
-console.log(req,"resq")
+  const response1 = await axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/channels", {
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        part: "snippet,statistics",
+        mine: true,
+        key: req.query.key,
+      },
+    });
+    console.log("sniipet", response1.data.items[0].snippet.publishedAt);
+
+  let initialDate = response1.data.items[0].snippet.publishedAt;
+let startDate = moment(initialDate).format("YYYY-MM-DD")
   let date = new Date();
-  let today = moment(date).format('YYYY-MM-DD')
-  
-  console.log(today)
+  let today = moment(date).format("YYYY-MM-DD");
+
+  console.log(today);
   const response = await axios
     .create({
       baseURL: "https://youtubeanalytics.googleapis.com/v2/",
@@ -207,8 +225,9 @@ console.log(req,"resq")
       params: {
         ids: "channel==MINE",
         endDate: today,
-        metrics: "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
-        startDate: "2021-01-01",
+        metrics:
+          "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
+        startDate: startDate,
         dimensions: "day",
         sort: "day",
       },
